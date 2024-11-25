@@ -23,7 +23,7 @@ def handle_command(command):
         return {"status": "error", "details": "Invalid JSON format"}
 
 if __name__ == "__main__":
-    odin = UCLClient(device_id="odin")
+    odin = UCLClient(device_id="odin", broker_address="100.72.222.91")
 
     def on_message(client, userdata, message):
         print(f"Message received on {message.topic}: {message.payload.decode()}")

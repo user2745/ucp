@@ -12,7 +12,7 @@ def handle_command(command):
     return {"status": "success", "details": f"Executed: {command}"}
 
 if __name__ == "__main__":
-    fezzan = UCLClient(device_id="fezzan", broker_address="100.72.222.91")
+    fezzan = UCLClient(device_id="fezzan")
 
     # Subscribe to its command topic
     fezzan.subscribe("ucl/commands/fezzan")
