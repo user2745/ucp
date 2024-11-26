@@ -1,6 +1,8 @@
+import sys
 import os
-import json
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from ucl_core import UCLClient
+import json
 
 def handle_command(command):
     print(f"Executing command on Odin: {command}")
