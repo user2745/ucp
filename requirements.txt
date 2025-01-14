@@ -1,0 +1,4 @@
+paho-mqtt==1.6.1   # MQTT library for client-server communication
+jsonschema==4.19.0 # For JSON validation (optional, but useful for command validation)
+loguru==0.6.0      # For advanced logging (optional, replace with Python's built-in logging if unnecessary)
+setuptools
