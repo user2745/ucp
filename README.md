@@ -1,73 +1,64 @@
-# Universal Communication Layer (UCL)
+# Universal Communication Protocol (UCP)
 
-The Universal Communication Layer (UCL) is a lightweight, scalable communication system that enables seamless interaction between multiple devices using MQTT. It powers the connected infrastructure of L'Atelier, facilitating real-time messaging and device collaboration.
+The **Universal Communication Protocol (UCP)** is a lightweight, scalable communication framework built on MQTT. It enables real-time, bidirectional communication between devices, making it ideal for IoT, distributed systems, and collaborative device networks.
 
 ## Architecture
-The UCL consists of:
-1. **Mosquitto MQTT Broker (Fezzan)**:
-   - Acts as the central hub for all communication.
-   - Handles the publish/subscribe model for connected devices.
-
+1. **MQTT Broker (Fezzan)**:
+   - Central hub for message routing using a publish/subscribe model.
 2. **Device Agents**:
-   - Each device has a custom Python agent that:
-     - Subscribes to its specific `ucl/commands/<device_id>` topic for incoming commands.
-     - Publishes status updates to `ucl/status/<device_id>`.
-
+   - Each device runs a Python agent to:
+     - Subscribe to commands (`ucl/commands/<device_id>`).
+     - Publish status updates (`ucl/status/<device_id>`).
 3. **Connected Devices**:
-   - **Odin**: MacBook Air running the agent to process commands and respond.
-   - **Neue-Sanssouci**: Orange Pi for edge computing tasks.
-   - **Hildegard**: Raspberry Pi 3 for lightweight computation and monitoring.
+   - Example devices include:
+     - **Odin**: MacBook Air for command processing.
+     - **Neue-Sanssouci**: Orange Pi for edge computing.
+     - **Hildegard**: Raspberry Pi for monitoring.
 
 ## Features
-- **Lightweight Communication**: Built on MQTT, ensuring minimal resource usage.
-- **Modularity**: Each device operates independently while communicating through the UCL.
-- **Scalability**: Easily add new devices and topics to expand functionality.
-- **Real-Time Messaging**: Supports instant message delivery and response.
+- **Lightweight**: Minimal resource usage with MQTT.
+- **Real-Time**: Instant messaging and responses.
+- **Scalable**: Easily add devices and expand functionality.
+- **Modular**: Independent device operation through dynamic topics.
 
-## Setup
-### 1. Install Mosquitto (Broker)
+## Quick Start
+### 1. Install the MQTT Broker
 On Fezzan:
-```
+```bash
 sudo apt install mosquitto mosquitto-clients
 sudo systemctl enable mosquitto
 sudo systemctl start mosquitto
 ```
 
-Ensure the broker listens on port `1883` with the following configuration:
-```
-listener 1883
-allow_anonymous true
-```
-
-### 2. Deploy Device Agents
-Clone this repository on each device and install the dependencies:
-```
+### 2. Deploy the UCP Agents
+Clone the repository and install dependencies:
+```bash
 git clone <repository_url>
-cd ucl
+cd ucp
 pip install -r requirements.txt
 ```
 
-Run the agent:
-```
-python3 agents/<device_name>_agent.py
+Run the server or a client:
+```bash
+# Start the server
+python main.py server
+
+# Start a client
+python main.py client <device_id>
 ```
 
-### 3. Test the System
-Publish a test message to the broker:
-```
-mosquitto_pub -h <broker_ip> -t "ucl/commands/<device_name>" -m '{"action": "test_command"}'
+### 3. Test Communication
+Publish a test command:
+```bash
+mosquitto_pub -h <broker_ip> -t "ucl/commands/<device_id>" -m '{"action": "ping"}'
 ```
 
-Subscribe to the status topic to verify the response:
-```
-mosquitto_sub -h <broker_ip> -t "ucl/status/<device_name>"
+Subscribe to responses:
+```bash
+mosquitto_sub -h <broker_ip> -t "ucl/status/<device_id>"
 ```
 
 ## Topics
-- **Commands**: `ucl/commands/<device_id>` — Devices subscribe here to receive instructions.
-- **Status**: `ucl/status/<device_id>` — Devices publish their status and results here.
-
-## Future Plans
-- Add authentication for secure communication.
-- Implement logging and monitoring dashboard.
-- Expand to new devices and advanced functionalities.
+- **Commands**: `ucl/commands/<device_id>` — Devices receive instructions.
+- **Status**: `ucl/status/<device_id>` — Devices send status and responses.
+- **Broadcast**: `ucl/broadcast` — System-wide updates.

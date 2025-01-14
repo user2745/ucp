@@ -1,1 +1,6 @@
-__pycache__/*
+__pycache__/
+.venv/
+dist/
+build/
+ucp.egg-info
+ucp_framework.egg-info
